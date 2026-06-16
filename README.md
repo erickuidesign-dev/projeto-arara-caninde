@@ -1,99 +1,78 @@
-# 🚀 astro-base — Base Profissional para Landing Pages
+# 🌿 Projeto Arara-Canindé — O Azul que o Brasil Está Perdendo
 
-Base completa com Astro para criação de landing pages e sites institucionais com performance máxima e SEO perfeito.
+> **Landing Page de Alta Performance e Mobilização Social para a Conservação da Biodiversidade**
 
-## Por que Astro?
+Este repositório contém a página de conscientização e captura de leads do **Projeto Arara-Canindé**. Desenvolvido com foco em performance extrema, design premium e SEO otimizado, o site serve como canal de mobilização para converter visitantes em apoiadores ativos da preservação da espécie Ara ararauna no Brasil.
 
-- **Zero JS por padrão** — HTML puro, carregamento instantâneo
-- **SEO nativo** — meta tags, OG, canonical em cada página
-- **Island Architecture** — adicione React/Vue/Svelte apenas onde precisar
-- **100 no Lighthouse** — performance, acessibilidade, SEO, boas práticas
+---
 
-## Como iniciar
+## 🎨 Destaques do Projeto
 
-```bash
-npm install
-npm run dev      # http://localhost:4321
-npm run build    # Gera /dist com HTML estático
-npm run preview  # Preview do build local
-```
+*   **Experiência Imersiva (Above the Fold):** Vídeo em plano de fundo integrado a um layout com folhagem orgânica, overlays transparentes e cards flutuantes com dados reais sobre a perda do habitat e o tráfico silvestre.
+*   **Design Premium (Glassmorphic):** Componentes estruturados sob uma paleta de cores inspirada na própria arara (azul profundo, amarelo ocre, terracota de alerta) e interfaces translúcidas translúcidas (liquid glass).
+*   **Navegação Inteligente:** Menu de navegação responsivo de alta qualidade, adaptado para dispositivos móveis e tablets (telas de até 1024px) com animações fluidas via IntersectionObserver e controle de transições.
+*   **SEO Perfeito & 100 no Lighthouse:** Código focado em semântica HTML5 pura, meta tags Open Graph completas, tags canônicas automáticas e zero JavaScript desnecessário por padrão, garantindo carregamento instantâneo.
 
-## Estrutura
+---
 
-```
-astro-base/
+## 🛠️ Tecnologias Utilizadas
+
+*   **Core:** [Astro v6.4+](https://astro.build/) — Island Architecture para máxima eficiência.
+*   **Estilização:** Vanilla CSS estruturado (Tokens em `variables.css`, utilitários em `utilities.css` e componentes estruturados).
+*   **Linguagem:** TypeScript para tipagem segura nos templates Astro.
+*   **Multimídia:** Background de vídeo de alta resolução integrado diretamente no ciclo de carregamento e renderização dinâmica das transições da UI.
+
+---
+
+## 📂 Estrutura do Código
+
+```text
+arara-caninde/
 ├── src/
-│   ├── components/          # Seções reutilizáveis
-│   │   ├── Navbar.astro     # Navbar sticky com scroll effect
-│   │   ├── Hero.astro       # Seção hero com gradientes e grid
-│   │   ├── Features.astro   # Grid de recursos/funcionalidades
-│   │   ├── Stats.astro      # Números/estatísticas de impacto
-│   │   ├── Pricing.astro    # Planos de preço com destaque
-│   │   ├── Testimonials.astro # Depoimentos de clientes
-│   │   ├── FAQ.astro        # Accordion de perguntas frequentes
-│   │   ├── CTA.astro        # Chamada para ação final
-│   │   └── Footer.astro     # Rodapé com colunas de links
+│   ├── components/          # Elementos e Seções da Landing Page
+│   │   ├── Navbar.astro     # Cabeçalho responsivo com menu hambúrguer interativo
+│   │   ├── Hero.astro       # Seção hero imersiva com vídeo e cards informativos
+│   │   ├── Footer.astro     # Rodapé do site
+│   │   └── ...              # Outros componentes estruturais (FAQ, CTA, etc.)
 │   ├── layouts/
-│   │   ├── BaseLayout.astro    # HTML base com SEO completo
-│   │   └── LandingLayout.astro # Layout completo (Navbar + Footer + Scripts)
-│   ├── pages/
-│   │   ├── index.astro      # Landing page principal
-│   │   ├── sobre.astro      # Página institucional
-│   │   ├── contato.astro    # Formulário de contato
-│   │   └── 404.astro        # Página não encontrada
+│   │   ├── BaseLayout.astro    # Layout com tags SEO, viewport e metadados
+│   │   └── LandingLayout.astro # Layout com navbar e footer estruturados
 │   └── styles/
-│       ├── variables.css    # EDITE AQUI — Tokens do design
-│       ├── reset.css        # Reset + base
-│       ├── utilities.css    # Classes utilitárias
-│       ├── components.css   # Estilos de componentes
-│       └── global.css       # Entry point (importa tudo)
-├── astro.config.mjs         # Configuração do Astro
-└── .env.example             # Template de variáveis de ambiente
+│       ├── variables.css    # Design Tokens (cores, espaçamentos, fontes)
+│       ├── reset.css        # Reset global de estilos
+│       ├── utilities.css    # Classes utilitárias do layout
+│       └── components.css   # Estilos base de botões, cards e overlays
+├── public/                  # Vídeos, fontes, imagens e favicon estáticos
+├── astro.config.mjs         # Configurações do framework Astro
+└── tsconfig.json            # Configuração do TypeScript
 ```
 
-## Personalizar o visual
-
-Edite **`src/styles/variables.css`**:
-
-```css
-:root {
-  --color-primary: hsl(250, 80%, 62%); /* Sua cor principal */
-  --color-accent:  hsl(170, 70%, 45%); /* Cor de destaque   */
-}
-```
-
-## Criar uma nova landing page
-
-```astro
----
-import LandingLayout from '../layouts/LandingLayout.astro';
-import Hero          from '../components/Hero.astro';
-import Features      from '../components/Features.astro';
-import CTA           from '../components/CTA.astro';
 ---
 
-<LandingLayout title="Minha Nova LP" description="Descrição aqui">
-  <Hero
-    title="Meu título <span class='text-gradient'>incrível</span>"
-    subtitle="Meu subtítulo de conversão"
-    ctaPrimary={{ label: 'Começar →', href: '#' }}
-  />
-  <Features items={[...]} />
-  <CTA title="Pronto para começar?" />
-</LandingLayout>
-```
+## 🚀 Como Iniciar Localmente
 
-## Adicionar React (opcional)
+### Pré-requisitos
+Certifique-se de possuir o **Node.js** instalado localmente (versão `>= 22.12.0`).
 
-```bash
-npx astro add react
-```
+1. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-## Scripts
+2. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
+   Acesse a URL gerada (geralmente [http://localhost:4321](http://localhost:4321)) no seu navegador.
 
-| Comando | Ação |
-|---|---|
-| `npm run dev` | Servidor local em `localhost:4321` |
-| `npm run build` | Build estático em `/dist` |
-| `npm run preview` | Preview do build |
-| `npm run astro` | CLI do Astro |
+3. **Gere a build de produção:**
+   ```bash
+   npm run build
+   ```
+   Os arquivos estáticos otimizados serão criados na pasta `/dist`.
+
+---
+
+## 🌿 Sobre a Causa
+
+A **arara-canindé** (*Ara ararauna*), símbolo vivo da Amazônia e do Pantanal, enfrenta uma iminente ameaça devido ao desmatamento contínuo e ao tráfico de animais silvestres. Este projeto visa unificar tecnologia e design para amplificar a voz das iniciativas de preservação e construir uma base engajada de defensores da fauna brasileira.
