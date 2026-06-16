@@ -1,0 +1,136 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+
+const contactOptions = [
+  { icon: '💬', title: 'Chat ao vivo',     desc: 'Disponível de seg–sex, 9h–18h',       action: 'Iniciar chat',   href: '#' },
+  { icon: '📧', title: 'E-mail',           desc: 'contato@meusite.com',                  action: 'Enviar e-mail',  href: 'mailto:contato@meusite.com' },
+  { icon: '📞', title: 'Telefone',         desc: '+55 (11) 9999-9999',                   action: 'Ligar agora',    href: 'tel:+5511999999999' },
+  { icon: '📅', title: 'Agendar reunião', desc: 'Escolha um horário no seu calendário', action: 'Ver agenda',     href: '#' },
+];
+---
+
+<LandingLayout
+  title="Contato"
+  description="Fale com nosso time. Estamos prontos para ajudar você."
+  navTransparent={false}
+>
+  <section class="section" style="padding-top: calc(var(--navbar-height) + var(--section-py));">
+    <div class="container-lg">
+
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <span class="badge badge-primary mb-6">✉️ Contato</span>
+        <h1 class="mb-4">Como podemos <span class="text-gradient">ajudar?</span></h1>
+        <p style="font-size: var(--text-lg); max-width: 480px; margin: 0 auto;">
+          Nosso time responde em até 2 horas durante o horário comercial.
+        </p>
+      </div>
+
+      <div class="grid-2" style="gap: var(--space-12); align-items: start;">
+
+        <!-- Formulário -->
+        <div class="card" style="padding: var(--space-8);">
+          <h2 style="font-size: var(--text-xl); margin-bottom: var(--space-6);">Enviar mensagem</h2>
+
+          <form
+            id="contact-form"
+            style="display: flex; flex-direction: column; gap: var(--space-5);"
+          >
+            <div class="grid-2" style="gap: var(--space-4);">
+              <div class="form-group">
+                <label class="form-label" for="nome">Nome <span style="color:var(--color-danger)">*</span></label>
+                <input class="form-input" type="text"  id="nome"   name="nome"   placeholder="Seu nome"      required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="email">E-mail <span style="color:var(--color-danger)">*</span></label>
+                <input class="form-input" type="email" id="email"  name="email"  placeholder="seu@email.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="empresa">Empresa</label>
+              <input class="form-input" type="text" id="empresa" name="empresa" placeholder="Nome da empresa (opcional)" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="assunto">Assunto <span style="color:var(--color-danger)">*</span></label>
+              <select class="form-input" id="assunto" name="assunto" required>
+                <option value="" disabled selected>Selecione o assunto</option>
+                <option value="vendas">Quero contratar</option>
+                <option value="suporte">Suporte técnico</option>
+                <option value="parceria">Parceria</option>
+                <option value="imprensa">Imprensa</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="mensagem">Mensagem <span style="color:var(--color-danger)">*</span></label>
+              <textarea
+                class="form-input"
+                id="mensagem"
+                name="mensagem"
+                rows="5"
+                placeholder="Descreva como podemos ajudar..."
+                required
+                style="resize: vertical; min-height: 140px;"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-full" id="submit-btn">
+              Enviar mensagem
+            </button>
+
+            <p class="form-hint text-center">
+              Ao enviar, você concorda com nossa <a href="/privacidade">Política de Privacidade</a>.
+            </p>
+          </form>
+        </div>
+
+        <!-- Opções de contato -->
+        <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+          {contactOptions.map(opt => (
+            <a href={opt.href} class="card flex gap-4 items-center" style="text-decoration:none;">
+              <div class="feature-icon" style="flex-shrink:0; margin:0;">{opt.icon}</div>
+              <div style="flex:1;">
+                <div style="font-weight: var(--font-semi); margin-bottom: var(--space-1);">{opt.title}</div>
+                <div class="text-muted text-sm">{opt.desc}</div>
+              </div>
+              <span class="text-sm" style="color: var(--color-primary-light); flex-shrink:0;">{opt.action} →</span>
+            </a>
+          ))}
+
+          <!-- Aviso de tempo de resposta -->
+          <div class="glass" style="padding: var(--space-5); margin-top: var(--space-2);">
+            <div style="font-size: var(--text-sm); font-weight: var(--font-semi); margin-bottom: var(--space-2);">⏱ Tempo de resposta</div>
+            <p class="text-sm text-muted">
+              Respondemos em média em <strong>2 horas</strong> durante o horário comercial (seg–sex, 9h–18h). Para emergências, use o chat.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const btn  = document.getElementById('submit-btn') as HTMLButtonElement | null;
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!btn) return;
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      // Substitua por chamada real à sua API / Formspree / etc.
+      await new Promise(r => setTimeout(r, 1500));
+
+      btn.textContent = '✅ Mensagem enviada!';
+      form.reset();
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'Enviar mensagem';
+      }, 4000);
+    });
+  </script>
+</LandingLayout>

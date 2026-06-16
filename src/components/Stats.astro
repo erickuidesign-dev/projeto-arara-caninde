@@ -1,0 +1,42 @@
+---
+/**
+ * Stats.astro — Seção de números/estatísticas
+ */
+interface StatItem {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  items?: StatItem[];
+}
+
+const defaultStats: StatItem[] = [
+  { value: '10k+', label: 'Clientes ativos' },
+  { value: '99.9%', label: 'Uptime garantido' },
+  { value: '2.4s',  label: 'Tempo médio de resposta' },
+  { value: '4.9★',  label: 'Avaliação média' },
+];
+
+const { items = defaultStats } = Astro.props;
+---
+
+<section class="section-sm">
+  <div class="container">
+    <div class="divider-gradient mb-12"></div>
+
+    <div class="grid-4" style="text-align: center; gap: var(--space-8);">
+      {items.map((stat, i) => (
+        <div
+          data-animate
+          style={`animation: fadeInUp 0.5s ease both; animation-delay: ${i * 100}ms;`}
+        >
+          <div class="stat-value">{stat.value}</div>
+          <div class="stat-label">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+
+    <div class="divider-gradient mt-12"></div>
+  </div>
+</section>

@@ -1,0 +1,70 @@
+---
+/**
+ * BaseLayout.astro — Layout base de todas as páginas
+ *
+ * Props:
+ *  - title:       string  (título da página)
+ *  - description: string  (meta description)
+ *  - image:       string  (OG image URL)
+ *  - noIndex:     boolean (bloquear indexação)
+ */
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description = 'Descrição padrão do site. Edite em BaseLayout.astro.',
+  image = '/og-image.jpg',
+  noIndex = false,
+} = Astro.props;
+
+const siteUrl   = import.meta.env.SITE_URL  || 'https://meusite.com';
+const siteName  = import.meta.env.SITE_NAME || 'MeuSite';
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content={canonical} />
+    <meta property="og:title"       content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image"       content={new URL(image, siteUrl).toString()} />
+    <meta property="og:site_name"   content={siteName} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image"       content={new URL(image, siteUrl).toString()} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Performance hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Slot para head extra (scripts, estilos) -->
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,496 @@
+---
+/**
+ * Hero.astro — Seção hero principal da landing page redesenhada
+ */
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  ctaPrimary?: { label: string; href: string };
+  ctaSecondary?: { label: string; href: string };
+  socialProof?: string;
+}
+
+const {
+  eyebrow     = '🌿 Conservação da Biodiversidade Brasileira',
+  title       = 'O Azul que o Brasil Está Perdendo, <br/>Uma Pena de Cada Vez',
+  subtitle    = 'A arara-canindé — símbolo vivo da Amazônia e do Pantanal — enfrenta sua maior ameaça: o silêncio de quem poderia agir. Junte-se ao movimento que está reescrevendo essa história.',
+  ctaPrimary  = { label: 'QUERO FAZER PARTE', href: '#participar' },
+  ctaSecondary= { label: 'SAIBA MAIS', href: '#problema' },
+  socialProof = '⚠️ Menos de 100 mil indivíduos estimados em liberdade',
+} = Astro.props;
+---
+
+<section class="hero" id="inicio">
+  <!-- Glowing Background blobs para visual premium -->
+  <div class="fixed-glow-blobs pointer-none">
+    <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[140px] glow-blob"></div>
+    <div class="absolute top-1/3 right-0 w-[600px] h-[600px] bg-blue-950/5 rounded-full blur-[160px] glow-blob animation-delay-2000"></div>
+    <div class="absolute -bottom-20 left-1/4 w-[400px] h-[400px] bg-teal-950/5 rounded-full blur-[120px] glow-blob"></div>
+  </div>
+
+  <!-- Vídeo de background original (SEM looping, cores vivas reais e SEM poster para evitar flashes) -->
+  <video autoplay muted playsinline class="hero-video-bg" id="hero-video">
+    <source src="/images/Blue-and-Yellow_Macaw_lands_on_b…_202606150840.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Frame de folhas por cima do vídeo -->
+  <img src="/images/frame-folhas.png" class="hero-frame-leaves pointer-none" alt="" />
+
+  <!-- Overlay transparente para preservar cores vivas do vídeo -->
+  <div class="hero-video-overlay"></div>
+  <div class="hero-bottom-fade"></div>
+
+  <!-- Container de conteúdo inicia oculto e revela via JS ao pousar da arara -->
+  <div class="container hero-container" id="hero-content">
+    <div class="hero-content-grid">
+      
+      <!-- Lado Esquerdo: Textos & CTAs (7 Colunas) -->
+      <div class="hero-left">
+        {eyebrow && (
+          <div class="hero-badge-container animate-item">
+            <div class="liquid-glass hero-badge">
+              <span class="hero-badge-text">{eyebrow}</span>
+            </div>
+          </div>
+        )}
+
+
+        <h1 class="hero-title font-display italic animate-item" set:html={title} />
+
+        <p class="hero-desc font-body animate-item">{subtitle}</p>
+
+        <!-- Botões lado a lado -->
+        <div class="hero-actions-wrapper animate-item">
+          <a href={ctaPrimary.href} class="btn btn-primary btn-lg">
+            {ctaPrimary.label}
+          </a>
+          <a href={ctaSecondary.href} class="btn btn-secondary btn-lg">
+            {ctaSecondary.label}
+          </a>
+        </div>
+
+        {socialProof && (
+          <div class="hero-proof-text animate-item">
+            <span>{socialProof}</span>
+          </div>
+        )}
+      </div>
+
+      <!-- Lado Direito: 2 Cards Flutuantes (5 Colunas) -->
+      <div class="hero-right">
+        <div class="cards-stack">
+          <!-- Card 1 com invólucro de flutuação ambiente -->
+          <div class="card-float-wrapper-1 animate-item">
+            <div class="liquid-glass hover-glow-border hero-info-card">
+              <div class="card-icon">🌳</div>
+              <div class="card-details">
+                <div class="card-value">80%</div>
+                <p class="card-text">da cobertura florestal original do Brasil já foi destruída — afetando diretamente o habitat natural da espécie.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 com invólucro de flutuação ambiente (defasado) -->
+          <div class="card-float-wrapper-2 animate-item">
+            <div class="liquid-glass hover-glow-border hero-info-card">
+              <div class="card-icon">🐦</div>
+              <div class="card-details">
+                <div class="card-value">38 Milhões</div>
+                <p class="card-text">de animais silvestres são retirados ilegalmente da natureza por ano no país. A arara-canindé é alvo principal.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  // Controla o surgimento suave dos elementos ao término do vídeo (quando a arara pousar)
+  const video = document.getElementById('hero-video') as HTMLVideoElement | null;
+  const heroContent = document.getElementById('hero-content');
+
+  if (video && heroContent) {
+    const revealElements = () => {
+      heroContent.classList.add('visible');
+    };
+
+    // Dispara a animação quando o vídeo termina (a arara pousa)
+    video.addEventListener('ended', revealElements);
+
+    // Fallback de segurança: se o autoplay for bloqueado ou vídeo falhar, exibe após 4.5 segundos
+    const fallbackTimeout = setTimeout(revealElements, 4500);
+
+    video.play().catch(() => {
+      clearTimeout(fallbackTimeout);
+      revealElements();
+    });
+  } else if (heroContent) {
+    heroContent.classList.add('visible');
+  }
+</script>
+
+<style>
+  /* Estilização exclusiva da seção hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--navbar-height);
+    background: #050508;
+  }
+
+  .fixed-glow-blobs {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    animation: fade-in-video 2s cubic-bezier(0.25, 1, 0.5, 1) 0.8s forwards;
+  }
+
+  /* Overlay transparente para preservar cores vivas do vídeo */
+  .hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-frame-leaves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2; /* Fica acima do vídeo e dos glows, mas abaixo do texto */
+    pointer-events: none;
+    opacity: 0;
+    animation: fade-in-leaves 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  @keyframes fade-in-leaves {
+    from {
+      opacity: 0;
+      transform: scale(1.03);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fade-in-video {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .hero-bottom-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20vh;
+    background: linear-gradient(to bottom, transparent, rgba(5, 5, 8, 0.4) 60%, #050508 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Animações e Transições de Revelação */
+  .hero-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding-block: var(--space-16);
+  }
+
+  .animate-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1200ms cubic-bezier(0.25, 1, 0.5, 1), transform 1200ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Quando o container se torna visível (JS adiciona .visible) */
+  .hero-container.visible .animate-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger da revelação suave do conteúdo */
+  .hero-container.visible .hero-badge-container { transition-delay: 100ms; }
+  .hero-container.visible .hero-title { transition-delay: 250ms; }
+  .hero-container.visible .hero-desc { transition-delay: 450ms; }
+  .hero-container.visible .hero-actions-wrapper { transition-delay: 650ms; }
+  .hero-container.visible .hero-proof-text { transition-delay: 800ms; }
+  .hero-container.visible .card-float-wrapper-1 { transition-delay: 400ms; }
+  .hero-container.visible .card-float-wrapper-2 { transition-delay: 600ms; }
+
+  .hero-content-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-12);
+    align-items: center;
+    width: 100%;
+  }
+
+  /* Coluna Esquerda (Textos e CTAs) */
+  .hero-left {
+    grid-column: span 8;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-badge-container {
+    margin-bottom: var(--space-5);
+  }
+
+  .hero-badge {
+    border-radius: var(--radius-full);
+    padding: var(--space-2) var(--space-5);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .hero-badge-text {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: var(--text-sm);
+    font-weight: 300;
+  }
+
+
+  .hero-title {
+    font-size: var(--text-6xl);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin-bottom: var(--space-5);
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  }
+
+  .hero-title :global(span) {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: #ffffff;
+    font-weight: 300;
+  }
+
+  .hero-desc {
+    font-size: var(--text-base);
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: var(--font-regular);
+    line-height: var(--leading-normal);
+    max-width: 620px;
+    margin-bottom: var(--space-8);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Botões lado a lado */
+  .hero-actions-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-6);
+  }
+
+  .hero-proof-text {
+    font-size: var(--text-xs);
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: var(--font-regular);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Coluna Direita (2 Cards Flutuantes) */
+  .hero-right {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cards-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto;
+  }
+
+  /* Flutuação ambiente dos cards (independente do hover) */
+  .card-float-wrapper-1 {
+    align-self: flex-start;
+    margin-left: -80px;
+    animation: float-card-1 6s ease-in-out infinite;
+  }
+  .card-float-wrapper-2 {
+    align-self: flex-end;
+    margin-right: -30px;
+    animation: float-card-2 6s ease-in-out infinite;
+  }
+
+  @keyframes float-card-1 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes float-card-2 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  .hero-info-card {
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1; /* Quadrado perfeito */
+    max-width: 250px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition: 
+      transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1), 
+      border-color 300ms, 
+      box-shadow 300ms,
+      backdrop-filter 8000ms cubic-bezier(0.25, 1, 0.5, 1),
+      -webkit-backdrop-filter 8000ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Quando a arara pousar e o container ficar visível, o blur aumenta lentamente */
+  .hero-container.visible .hero-info-card {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Delays correspondentes para manter a sincronia */
+  .hero-container.visible .card-float-wrapper-1 .hero-info-card {
+    transition-delay: 0ms, 0ms, 0ms, 400ms, 400ms;
+  }
+  .hero-container.visible .card-float-wrapper-2 .hero-info-card {
+    transition-delay: 0ms, 0ms, 0ms, 600ms, 600ms;
+  }
+
+  /* Efeito de hover bonito e elástico */
+  .hero-info-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    border-color: rgba(0, 191, 255, 0.45);
+    box-shadow: 0 20px 48px rgba(26, 111, 168, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  }
+
+
+  .card-icon {
+    font-size: 2.25rem;
+    flex-shrink: 0;
+    margin-bottom: var(--space-1);
+    transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .hero-info-card:hover .card-icon {
+    transform: scale(1.15) translateY(-2px);
+  }
+
+  .card-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .card-value {
+    font-size: var(--text-xl);
+    font-weight: 400; /* Sem bold */
+    line-height: 1.1;
+    color: #ffffff;
+  }
+
+  .card-text {
+    font-size: var(--text-xs);
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 300;
+    line-height: var(--leading-snug);
+    max-width: 210px;
+  }
+
+  /* Responsividade */
+  @media (max-width: 1024px) {
+    .hero-content-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .hero-left {
+      grid-column: span 12;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-right {
+      grid-column: span 12;
+    }
+
+    .card-float-wrapper-1, .card-float-wrapper-2 {
+      align-self: center;
+      margin-left: 0;
+      margin-right: 0;
+      animation: none; /* Desativa flutuação em telas de toque/mobile */
+    }
+
+    .hero-info-card {
+      aspect-ratio: auto; /* Desativa formato quadrado no celular */
+      flex-direction: row;
+      text-align: left;
+      align-items: center;
+      padding: var(--space-4) var(--space-5);
+      max-width: 100%;
+    }
+
+    .card-icon {
+      margin-bottom: 0;
+    }
+
+    .card-details {
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding-top: calc(var(--navbar-height) + var(--space-4));
+    }
+    .hero-title {
+      font-size: 2.5rem;
+    }
+  }
+</style>

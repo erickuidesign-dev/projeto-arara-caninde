@@ -1,0 +1,76 @@
+---
+/**
+ * Features.astro — Seção de recursos/funcionalidades
+ *
+ * Props:
+ *  - eyebrow:  string
+ *  - title:    string
+ *  - subtitle: string
+ *  - items:    FeatureItem[]
+ */
+interface FeatureItem {
+  icon:        string;
+  title:       string;
+  description: string;
+  badge?:      string;
+  badgeVariant?: 'primary' | 'accent' | 'success' | 'warning';
+}
+
+interface Props {
+  eyebrow?:  string;
+  title?:    string;
+  subtitle?: string;
+  items?:    FeatureItem[];
+}
+
+const defaultItems: FeatureItem[] = [
+  { icon: '⚡', title: 'Ultra Rápido',      description: 'Performance de classe mundial. Carregamento instantâneo com Astro e zero JavaScript desnecessário.', badge: 'Novo', badgeVariant: 'accent' },
+  { icon: '🎨', title: 'Design Moderno',    description: 'Design system completo com variáveis CSS. Personalize todo o visual editando apenas o variables.css.' },
+  { icon: '🔒', title: 'Segurança Total',   description: 'Autenticação robusta, proteção de dados e conformidade com as melhores práticas de segurança.' },
+  { icon: '📊', title: 'Analytics',         description: 'Painel completo de métricas em tempo real para acompanhar o crescimento do seu negócio.', badge: 'Beta', badgeVariant: 'warning' },
+  { icon: '🌐', title: 'Multi-idioma',      description: 'Suporte nativo a múltiplos idiomas e localização para alcançar clientes globalmente.' },
+  { icon: '🤖', title: 'IA Integrada',      description: 'Recursos inteligentes powered by IA para automatizar tarefas e melhorar a experiência do usuário.' },
+];
+
+const {
+  eyebrow  = '✨ Recursos',
+  title    = 'Tudo que você precisa',
+  subtitle = 'Uma plataforma completa para construir, escalar e gerenciar seu negócio com eficiência.',
+  items    = defaultItems,
+} = Astro.props;
+---
+
+<section class="section" id="features">
+  <div class="container">
+    <!-- Header -->
+    <div class="section-header">
+      <div class="section-eyebrow">
+        <span class="badge badge-primary">{eyebrow}</span>
+      </div>
+      <h2 class="section-title" data-animate style="animation: fadeInUp 0.6s ease both;">
+        {title}
+      </h2>
+      <p class="section-subtitle">{subtitle}</p>
+    </div>
+
+    <!-- Grid de features -->
+    <div class="grid-auto">
+      {items.map((item, i) => (
+        <div
+          class="card"
+          data-animate
+          style={`animation: fadeInUp 0.6s ease both; animation-delay: ${i * 80}ms;`}
+        >
+          <div class="flex-between mb-4">
+            <div class="feature-icon">{item.icon}</div>
+            {item.badge && (
+              <span class={`badge badge-${item.badgeVariant || 'primary'}`}>{item.badge}</span>
+            )}
+          </div>
+          <h3 class="feature-title">{item.title}</h3>
+          <p class="feature-desc">{item.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

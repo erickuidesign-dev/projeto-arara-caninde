@@ -1,0 +1,94 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+
+const team = [
+  { name: 'João Silva',    role: 'CEO & Co-Founder',     emoji: '👨‍💼', bio: 'Ex-Google. 15 anos de experiência em produto e tecnologia.' },
+  { name: 'Maria Santos',  role: 'CTO & Co-Founder',     emoji: '👩‍💻', bio: 'Engenheira de software. Especialista em sistemas distribuídos.' },
+  { name: 'Pedro Alves',   role: 'Head de Design',        emoji: '🎨', bio: 'Designer premiado com foco em experiência do usuário.' },
+  { name: 'Ana Ferreira',  role: 'Head de Crescimento',   emoji: '📈', bio: 'Estrategista de crescimento. Ex-Nubank, Ifood.' },
+];
+
+const values = [
+  { icon: '🎯', title: 'Foco no cliente',    desc: 'Cada decisão começa e termina com o cliente. O sucesso do cliente é o nosso sucesso.' },
+  { icon: '🔬', title: 'Inovação constante', desc: 'Nunca paramos de aprender e evoluir. A curiosidade é nossa maior vantagem competitiva.' },
+  { icon: '🤝', title: 'Transparência',      desc: 'Comunicação aberta, honesta e direta — com clientes, parceiros e entre nós.' },
+  { icon: '⚡', title: 'Velocidade',         desc: 'Executamos com rapidez sem comprometer a qualidade. Bom feito supera perfeito nunca feito.' },
+];
+---
+
+<LandingLayout
+  title="Sobre Nós"
+  description="Conheça a história, missão e o time por trás da plataforma."
+  navTransparent={false}
+>
+  <!-- Header -->
+  <section class="section" style="padding-top: calc(var(--navbar-height) + var(--section-py));">
+    <div class="container-md text-center">
+      <span class="badge badge-primary mb-6">🏢 Nossa história</span>
+      <h1 class="mb-6">
+        Nascemos para <span class="text-gradient">simplificar</span> o que é complexo
+      </h1>
+      <p style="font-size: var(--text-lg); max-width: 600px; margin: 0 auto;">
+        Fundada em 2022, nossa missão é democratizar o acesso a tecnologia de ponta para empresas de todos os tamanhos.
+      </p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="divider-gradient"></div>
+  </div>
+
+  <!-- Missão / Valores -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-accent section-eyebrow">💡 Nossos valores</span>
+        <h2 class="section-title">O que nos guia</h2>
+      </div>
+      <div class="grid-4">
+        {values.map((v, i) => (
+          <div class="card" data-animate style={`animation: fadeInUp 0.5s ease both; animation-delay: ${i*100}ms`}>
+            <div class="feature-icon">{v.icon}</div>
+            <h3 class="feature-title">{v.title}</h3>
+            <p class="feature-desc">{v.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Time -->
+  <section class="section" style="background: var(--color-bg-2);">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-primary section-eyebrow">👥 Time</span>
+        <h2 class="section-title">As pessoas por trás</h2>
+        <p class="section-subtitle">Um time diverso e apaixonado por construir produtos que fazem diferença.</p>
+      </div>
+      <div class="grid-4">
+        {team.map((p, i) => (
+          <div class="card text-center" data-animate style={`animation: fadeInUp 0.5s ease both; animation-delay: ${i*100}ms`}>
+            <div style="font-size: 3rem; margin-bottom: var(--space-4);">{p.emoji}</div>
+            <h3 style="font-size: var(--text-md); margin-bottom: var(--space-1);">{p.name}</h3>
+            <span class="badge badge-accent mb-4">{p.role}</span>
+            <p class="text-sm">{p.bio}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container-md">
+      <div class="cta-box text-center">
+        <h2 class="cta-title">Quer fazer parte da nossa história?</h2>
+        <p class="cta-subtitle">Estamos contratando talentos apaixonados por tecnologia e impacto.</p>
+        <div class="cta-actions">
+          <a href="/carreiras" class="btn btn-primary btn-xl">Ver vagas abertas</a>
+          <a href="/contato"   class="btn btn-secondary btn-xl">Falar com o time</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</LandingLayout>

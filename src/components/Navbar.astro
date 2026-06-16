@@ -1,0 +1,77 @@
+---
+/**
+ * Navbar.astro — Barra de navegação do site com estilo premium
+ *
+ * Props:
+ *  - transparent: boolean (inicia transparente, torna sólida ao rolar)
+ *  - logo:        string  (texto do logo)
+ */
+interface Props {
+  transparent?: boolean;
+  logo?: string;
+}
+
+const { transparent = true, logo = 'ARARA-CANINDÉ' } = Astro.props;
+
+const links = [
+  { href: '#inicio',      label: 'Início'       },
+  { href: '#problema',    label: 'O Problema'   },
+  { href: '#missao',      label: 'Nossa Missão' },
+  { href: '#impacto',     label: 'Impacto'      },
+  { href: '#faq',         label: 'FAQ'          },
+];
+---
+
+<nav class={`navbar ${!transparent ? 'scrolled' : ''}`}>
+  <div class="navbar-inner">
+    <!-- Logo com Ícone de Arara (logotype.svg) -->
+    <a href="/" class="navbar-logo" aria-label="Início">
+      <img src="/logotype.svg" class="nav-logo-icon" alt="Logo Arara-Canindé" style="height: 54px; width: auto; object-fit: contain;" />
+      <span class="logo-text">{logo}</span>
+    </a>
+
+    <!-- Links desktop -->
+    <div class="navbar-links hide-mobile">
+      {links.map(({ href, label }) => (
+        <a href={href} class="navbar-link">{label}</a>
+      ))}
+    </div>
+
+    <!-- Ações com botões melhorados -->
+    <div class="navbar-actions">
+      <a href="/contato" class="btn btn-secondary btn-sm hide-mobile">CONTATO</a>
+      <a href="#participar"  class="btn btn-primary btn-sm">COMEÇAR</a>
+    </div>
+  </div>
+</nav>
+
+
+<style>
+  /* Ajustes finos adicionais para a Navbar */
+  .navbar-logo {
+    gap: var(--space-3);
+  }
+  .nav-logo-icon {
+    flex-shrink: 0;
+    transition: transform var(--ease-normal);
+  }
+  .navbar-logo:hover .nav-logo-icon {
+    transform: rotate(-5deg) scale(1.05);
+  }
+  .logo-text {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: #ffffff;
+    font-weight: 300;
+    font-size: 1.8rem; /* Aumentado */
+  }
+  .navbar-actions .btn {
+    letter-spacing: 0.05em;
+    font-size: var(--text-xs);
+  }
+  .navbar-actions .btn-secondary {
+    padding: var(--space-2) var(--space-4);
+  }
+</style>
+
+

@@ -1,0 +1,106 @@
+---
+/**
+ * Testimonials.astro — Seção de depoimentos de clientes
+ */
+interface Testimonial {
+  text:   string;
+  name:   string;
+  role:   string;
+  avatar?: string;
+  stars?:  number;
+}
+
+interface Props {
+  eyebrow?:  string;
+  title?:    string;
+  subtitle?: string;
+  items?:    Testimonial[];
+}
+
+const defaultItems: Testimonial[] = [
+  {
+    text:  'Desde que começamos a usar, nossa produtividade aumentou mais de 40%. A interface é intuitiva e o suporte é excepcional.',
+    name:  'Ana Paula Silva',
+    role:  'CEO, TechStartup',
+    stars: 5,
+  },
+  {
+    text:  'A melhor decisão que tomamos este ano. Reduziu nosso tempo de entrega em 30% e o time adorou a facilidade de uso.',
+    name:  'Carlos Mendonça',
+    role:  'CTO, Agência Digital',
+    stars: 5,
+  },
+  {
+    text:  'Simplesmente incrível. Implementamos em menos de uma semana e já vemos resultados reais no nosso crescimento.',
+    name:  'Juliana Ferreira',
+    role:  'Head de Produto, SaaS Corp',
+    stars: 5,
+  },
+  {
+    text:  'O ROI foi imediato. Em 3 meses recuperamos todo o investimento e ainda geramos 20% a mais de receita.',
+    name:  'Ricardo Alves',
+    role:  'Diretor Comercial, Enterprise Co.',
+    stars: 5,
+  },
+  {
+    text:  'Atendimento humanizado e produto robusto. Raramente encontramos essa combinação no mercado.',
+    name:  'Fernanda Costa',
+    role:  'Gerente de TI, Retail Group',
+    stars: 5,
+  },
+  {
+    text:  'Migramos de uma solução legada e a transição foi suave. O time de suporte fez toda a diferença.',
+    name:  'Marcos Oliveira',
+    role:  'Co-founder, Fintech',
+    stars: 5,
+  },
+];
+
+const {
+  eyebrow  = '💬 Depoimentos',
+  title    = 'Quem usa, recomenda',
+  subtitle = 'Mais de 500 empresas já transformaram seus negócios.',
+  items    = defaultItems,
+} = Astro.props;
+---
+
+<section class="section" id="depoimentos" style="background: var(--color-bg-2);">
+  <div class="container">
+    <!-- Header -->
+    <div class="section-header">
+      <div class="section-eyebrow">
+        <span class="badge badge-success">{eyebrow}</span>
+      </div>
+      <h2 class="section-title">{title}</h2>
+      <p class="section-subtitle">{subtitle}</p>
+    </div>
+
+    <!-- Grid de depoimentos -->
+    <div class="grid-3">
+      {items.map((t, i) => (
+        <div
+          class="testimonial"
+          data-animate
+          style={`animation: fadeInUp 0.6s ease both; animation-delay: ${i * 80}ms;`}
+        >
+          <div class="testimonial-stars">
+            {'★'.repeat(t.stars ?? 5)}
+          </div>
+          <p class="testimonial-text">"{t.text}"</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">
+              {t.avatar
+                ? <img src={t.avatar} alt={t.name} width="40" height="40" />
+                : t.name.split(' ').map(n => n[0]).join('').slice(0, 2)
+              }
+            </div>
+            <div>
+              <div class="testimonial-name">{t.name}</div>
+              <div class="testimonial-role">{t.role}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

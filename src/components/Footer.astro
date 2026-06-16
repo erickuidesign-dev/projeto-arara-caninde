@@ -1,0 +1,87 @@
+---
+/**
+ * Footer.astro — Rodapé completo com links e copyright
+ */
+interface FooterLink { label: string; href: string }
+interface FooterColumn { heading: string; links: FooterLink[] }
+
+interface Props {
+  logo?:        string;
+  description?: string;
+  columns?:     FooterColumn[];
+}
+
+const year = new Date().getFullYear();
+
+const defaultColumns: FooterColumn[] = [
+  {
+    heading: 'Produto',
+    links: [
+      { label: 'Recursos',     href: '#features' },
+      { label: 'Preços',       href: '#precos' },
+      { label: 'Changelog',    href: '/changelog' },
+      { label: 'Roadmap',      href: '/roadmap' },
+    ],
+  },
+  {
+    heading: 'Empresa',
+    links: [
+      { label: 'Sobre nós',    href: '/sobre' },
+      { label: 'Blog',         href: '/blog' },
+      { label: 'Carreiras',    href: '/carreiras' },
+      { label: 'Contato',      href: '/contato' },
+    ],
+  },
+  {
+    heading: 'Legal',
+    links: [
+      { label: 'Privacidade',  href: '/privacidade' },
+      { label: 'Termos de uso',href: '/termos' },
+      { label: 'Cookies',      href: '/cookies' },
+      { label: 'LGPD',         href: '/lgpd' },
+    ],
+  },
+];
+
+const {
+  logo        = '⚡ MeuSite',
+  description = 'A plataforma mais completa para escalar seu negócio digital com segurança e performance.',
+  columns     = defaultColumns,
+} = Astro.props;
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div>
+        <a href="/" class="navbar-logo" style="display: inline-block; margin-bottom: var(--space-4);">
+          {logo}
+        </a>
+        <p class="footer-brand-desc">{description}</p>
+      </div>
+
+      <!-- Colunas de links -->
+      {columns.map(col => (
+        <div>
+          <div class="footer-heading">{col.heading}</div>
+          <nav class="footer-links">
+            {col.links.map(link => (
+              <a href={link.href} class="footer-link">{link.label}</a>
+            ))}
+          </nav>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <span class="footer-copy">
+        © {year} MeuSite. Todos os direitos reservados.
+      </span>
+      <span class="footer-copy">
+        Feito com ❤️ usando Astro
+      </span>
+    </div>
+  </div>
+</footer>

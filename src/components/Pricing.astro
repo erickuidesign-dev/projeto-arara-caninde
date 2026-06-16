@@ -1,0 +1,115 @@
+---
+/**
+ * Pricing.astro — Seção de planos e preços
+ */
+interface PricingPlan {
+  name:     string;
+  desc:     string;
+  price:    string;
+  period?:  string;
+  features: string[];
+  disabled?: string[];
+  featured?: boolean;
+  badge?:   string;
+  cta:      string;
+  ctaHref:  string;
+}
+
+interface Props {
+  eyebrow?:  string;
+  title?:    string;
+  subtitle?: string;
+  plans?:    PricingPlan[];
+}
+
+const defaultPlans: PricingPlan[] = [
+  {
+    name:  'Starter',
+    desc:  'Ideal para começar e testar.',
+    price: 'Grátis',
+    features: ['Até 3 projetos', '1 usuário', 'Suporte por e-mail', '5 GB de armazenamento'],
+    disabled: ['Analytics avançado', 'Integrações premium', 'Suporte prioritário'],
+    cta:     'Começar Grátis',
+    ctaHref: '#',
+  },
+  {
+    name:    'Pro',
+    desc:    'Para profissionais e equipes.',
+    price:   'R$ 97',
+    period:  '/mês',
+    features: ['Projetos ilimitados', 'Até 10 usuários', 'Suporte prioritário', '50 GB de armazenamento', 'Analytics avançado', 'Integrações premium'],
+    featured: true,
+    badge:   'Mais popular',
+    cta:     'Assinar Pro →',
+    ctaHref: '#',
+  },
+  {
+    name:  'Enterprise',
+    desc:  'Para grandes empresas.',
+    price: 'Sob consulta',
+    features: ['Tudo do Pro', 'Usuários ilimitados', 'SLA 99.9%', 'Armazenamento ilimitado', 'Onboarding dedicado', 'Conta gerenciada'],
+    cta:     'Falar com Vendas',
+    ctaHref: '/contato',
+  },
+];
+
+const {
+  eyebrow  = '💰 Preços',
+  title    = 'Planos para todos os tamanhos',
+  subtitle = 'Sem surpresas. Cancele quando quiser. Comece com o plano gratuito.',
+  plans    = defaultPlans,
+} = Astro.props;
+---
+
+<section class="section" id="precos">
+  <div class="container">
+    <!-- Header -->
+    <div class="section-header">
+      <div class="section-eyebrow">
+        <span class="badge badge-accent">{eyebrow}</span>
+      </div>
+      <h2 class="section-title">{title}</h2>
+      <p class="section-subtitle">{subtitle}</p>
+    </div>
+
+    <!-- Planos -->
+    <div class="grid-3" style="align-items: start;">
+      {plans.map((plan, i) => (
+        <div
+          class={`pricing-card ${plan.featured ? 'featured' : ''}`}
+          data-animate
+          style={`animation: fadeInUp 0.6s ease both; animation-delay: ${i * 120}ms;`}
+        >
+          {plan.badge && (
+            <div class="pricing-badge">
+              <span class="badge badge-primary">{plan.badge}</span>
+            </div>
+          )}
+
+          <div>
+            <div class="pricing-name">{plan.name}</div>
+            <div class="pricing-desc">{plan.desc}</div>
+          </div>
+
+          <div class="pricing-price">
+            <span class="pricing-amount">{plan.price}</span>
+            {plan.period && <span class="pricing-period">{plan.period}</span>}
+          </div>
+
+          <ul class="pricing-features">
+            {plan.features.map(f => <li class="pricing-feature">{f}</li>)}
+            {(plan.disabled || []).map(f => <li class="pricing-feature disabled">{f}</li>)}
+          </ul>
+
+          <a
+            href={plan.ctaHref}
+            class={`btn w-full ${plan.featured ? 'btn-primary' : 'btn-secondary'}`}
+            style="justify-content: center;"
+          >
+            {plan.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

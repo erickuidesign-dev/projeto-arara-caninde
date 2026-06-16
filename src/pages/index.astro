@@ -1,0 +1,28 @@
+---
+/**
+ * index.astro — Landing Page Principal
+ *
+ * Para criar uma nova landing page:
+ * 1. Duplique este arquivo
+ * 2. Personalize as props de cada seção
+ * 3. Adicione/remova seções conforme necessário
+ */
+import LandingLayout from '../layouts/LandingLayout.astro';
+import Hero          from '../components/Hero.astro';
+---
+
+<LandingLayout
+  title="Projeto Arara-Canindé — O Azul que o Brasil Está Perdendo"
+  description="A arara-canindé — símbolo vivo da Amazônia e do Pantanal — enfrenta sua maior ameaça. Junte-se ao movimento que está reescrevendo essa história."
+>
+  <!-- 1. HERO -->
+  <Hero
+    eyebrow="🌿 Conservação da Biodiversidade Brasileira"
+    title="O Azul que o Brasil Está Perdendo, <br/>Uma <span class='text-gradient'>Pena de Cada Vez</span>"
+    subtitle="A arara-canindé — símbolo vivo da Amazônia e do Pantanal — enfrenta sua maior ameaça: o silêncio de quem poderia agir. Junte-se ao movimento que está reescrevendo essa história."
+    ctaPrimary={{ label: 'QUERO FAZER PARTE', href: '#participar' }}
+    ctaSecondary={{ label: 'SAIBA MAIS', href: '#problema' }}
+    socialProof="⚠️ Menos de 100 mil indivíduos estimados em liberdade"
+  />
+</LandingLayout>
+

@@ -1,0 +1,40 @@
+---
+/**
+ * CTA.astro — Seção de Call to Action final
+ */
+interface Props {
+  title?:    string;
+  subtitle?: string;
+  ctaPrimary?:   { label: string; href: string };
+  ctaSecondary?: { label: string; href: string };
+}
+
+const {
+  title       = 'Pronto para transformar seu negócio?',
+  subtitle    = 'Junte-se a milhares de empresas que já estão crescendo com nossa plataforma.',
+  ctaPrimary  = { label: 'Começar Agora — É Grátis', href: '#precos' },
+  ctaSecondary= { label: 'Agendar demonstração', href: '/contato' },
+} = Astro.props;
+---
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box" data-animate style="animation: scaleIn 0.5s var(--ease-spring) both;">
+      <h2 class="cta-title">
+        {title.split(' ').slice(0, -2).join(' ')}{' '}
+        <span class="text-gradient">
+          {title.split(' ').slice(-2).join(' ')}
+        </span>
+      </h2>
+      <p class="cta-subtitle">{subtitle}</p>
+      <div class="cta-actions">
+        <a href={ctaPrimary.href} class="btn btn-primary btn-xl">
+          {ctaPrimary.label}
+        </a>
+        <a href={ctaSecondary.href} class="btn btn-secondary btn-xl">
+          {ctaSecondary.label}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

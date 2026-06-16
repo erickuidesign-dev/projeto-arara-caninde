@@ -1,0 +1,69 @@
+---
+/**
+ * LandingLayout.astro — Layout completo para landing pages
+ * Inclui: BaseLayout + import global CSS + Navbar + Footer
+ *
+ * Props: todas as props do BaseLayout
+ */
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  noIndex?: boolean;
+  navTransparent?: boolean;
+}
+
+const { navTransparent = true, ...rest } = Astro.props;
+---
+
+<BaseLayout {...rest}>
+  <Navbar transparent={navTransparent} />
+  <main>
+    <slot />
+  </main>
+  <Footer />
+
+  <!-- Script: Navbar scroll effect + FAQ toggle -->
+  <script>
+    // Navbar: adiciona classe 'scrolled' ao rolar
+    const navbar = document.querySelector('.navbar') as HTMLElement | null;
+    if (navbar) {
+      const onScroll = () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 20);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    // FAQ: toggle open/close
+    document.querySelectorAll('.faq-question').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        item?.classList.toggle('open');
+      });
+    });
+
+    // Animações de entrada via IntersectionObserver
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).style.animationPlayState = 'running';
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('[data-animate]').forEach((el) => {
+      (el as HTMLElement).style.animationPlayState = 'paused';
+      observer.observe(el);
+    });
+  </script>
+</BaseLayout>
