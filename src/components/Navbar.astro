@@ -41,10 +41,56 @@ const links = [
     <div class="navbar-actions">
       <a href="/contato" class="btn btn-secondary btn-sm hide-mobile">CONTATO</a>
       <a href="#participar"  class="btn btn-primary btn-sm">COMEÇAR</a>
+      
+      <!-- Hamburger Menu Button (visible only on mobile) -->
+      <button class="hamburger-btn" aria-label="Abrir Menu" aria-expanded="false">
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
+        <span class="line line-3"></span>
+      </button>
     </div>
   </div>
 </nav>
 
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu">
+  <div class="mobile-menu-inner">
+    <nav class="mobile-nav-links">
+      {links.map(({ href, label }) => (
+        <a href={href} class="mobile-nav-link">{label}</a>
+      ))}
+      <a href="/contato" class="mobile-nav-link button-link">CONTATO</a>
+    </nav>
+  </div>
+</div>
+
+<script>
+  const hamburgerBtn = document.querySelector('.hamburger-btn');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  const body = document.body;
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+  if (hamburgerBtn && mobileMenu) {
+    const toggleMenu = () => {
+      const isActive = hamburgerBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      body.classList.toggle('no-scroll');
+      hamburgerBtn.setAttribute('aria-expanded', String(isActive));
+    };
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+
+    // Close menu when a link is clicked
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburgerBtn.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        body.classList.remove('no-scroll');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+</script>
 
 <style>
   /* Ajustes finos adicionais para a Navbar */
@@ -63,7 +109,12 @@ const links = [
     -webkit-text-fill-color: initial;
     color: #ffffff;
     font-weight: 300;
-    font-size: 1.8rem; /* Aumentado */
+    font-size: 1.8rem;
+  }
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
   }
   .navbar-actions .btn {
     letter-spacing: 0.05em;
@@ -72,6 +123,146 @@ const links = [
   .navbar-actions .btn-secondary {
     padding: var(--space-2) var(--space-4);
   }
+
+  /* Hamburger Button */
+  .hamburger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 22px;
+    height: 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 110;
+    position: relative;
+  }
+  
+  .hamburger-btn .line {
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                background-color 0.3s ease;
+  }
+  
+  /* Hamburger animation when active */
+  .hamburger-btn.active .line-1 {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hamburger-btn.active .line-2 {
+    opacity: 0;
+  }
+  .hamburger-btn.active .line-3 {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile Menu Overlay */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    background: hsla(222, 20%, 7%, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 105;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: var(--navbar-height);
+  }
+  
+  .mobile-menu.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .mobile-menu-inner {
+    width: 100%;
+    max-width: var(--container-sm);
+    padding: var(--space-8);
+    text-align: center;
+  }
+  
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  
+  .mobile-nav-link {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .mobile-menu.active .mobile-nav-link {
+    opacity: 1;
+    transform: translateY(0);
+    /* Animates them in sequence */
+    transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                color 0.3s ease;
+  }
+  
+  /* Stagger animation for links */
+  .mobile-menu.active .mobile-nav-link:nth-child(1) { transition-delay: 80ms; }
+  .mobile-menu.active .mobile-nav-link:nth-child(2) { transition-delay: 140ms; }
+  .mobile-menu.active .mobile-nav-link:nth-child(3) { transition-delay: 200ms; }
+  .mobile-menu.active .mobile-nav-link:nth-child(4) { transition-delay: 260ms; }
+  .mobile-menu.active .mobile-nav-link:nth-child(5) { transition-delay: 320ms; }
+  .mobile-menu.active .mobile-nav-link:nth-child(6) { transition-delay: 380ms; }
+  
+  .mobile-nav-link:hover {
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+  
+  .mobile-nav-link.button-link {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    padding: var(--space-3) var(--space-8);
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    width: 100%;
+    max-width: 200px;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  }
+  
+  .mobile-nav-link.button-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Media Queries for tablets and mobile */
+  @media (max-width: 1024px) {
+    .navbar-links {
+      display: none !important;
+    }
+    .navbar-actions .btn-secondary {
+      display: none !important;
+    }
+    .hamburger-btn {
+      display: flex;
+    }
+  }
 </style>
 
-
+<style is:global>
+  body.no-scroll {
+    overflow: hidden;
+  }
+</style>
